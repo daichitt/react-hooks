@@ -1,7 +1,8 @@
 import reactLogo from './assets/react.svg'
 import './App.css'
-import { React, useEffect, useState, useContext, useRef, useReducer, useMemo } from 'react'
+import { React, useEffect, useState, useContext, useRef, useReducer, useMemo, useCallback } from 'react'
 import CodeContext from './main';
+import useLocalStrage from './useLocalStrage';
 
 
 const reducer = (state, action) => {
@@ -72,6 +73,9 @@ function App() {
   const handleRef = () => {
     console.log(ref.current.value);
   };
+
+  // useCallbackは飛ばす
+  const [age, setAge] = useLocalStrage("age", 23);
   return (
     <div className="App">
       <h1>UseState, useEffect</h1>
@@ -101,6 +105,12 @@ function App() {
       {/* <div>result = {square()}</div> */}
       <button onClick={() => setcount01(count01 + 1)}> + </button>
       <button onClick={() => setcount02(count02 + 1)}> + </button>
+      {/* <hr />
+      <h1>useCallback</h1> */}
+      <hr />
+      <h1>customHooks</h1>
+      <p>{age}</p>
+      <button onClick={() => setAge(80)}></button>
     </div>
   )
 }
