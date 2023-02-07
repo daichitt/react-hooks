@@ -1,32 +1,38 @@
-import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
+import { React, useEffect, useState, useContext } from 'react'
+import CodeContext from './main';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCounter] = useState(0);
+  const codeinfo = useContext(CodeContext);
+
+  const increase = () => {
+    if(count == 10) return;
+    setCounter(count + 1);
+  };
+
+  const decrease = () => {
+    if(count == 0) return;
+    setCounter(count - 1);
+  };
+
+  useEffect(() => {
+    console.log("hello")
+    // Dont use set function in useEffect
+  }, [count]);// 第2引数には副作用関数の実行タイミングを制御する依存データを記述
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>UseState, useEffect</h1>
+      <button onClick={increase}> + </button>
+      <button onClick={decrease}> - </button>
+      <p>{count}</p>
+      <hr />
+      <h1>useContext</h1>
+      <p>{codeinfo.name}</p>
+      <p>{codeinfo.age}</p>
     </div>
   )
 }
