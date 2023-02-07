@@ -1,6 +1,6 @@
 import reactLogo from './assets/react.svg'
 import './App.css'
-import { React, useEffect, useState, useContext, useRef, useReducer } from 'react'
+import { React, useEffect, useState, useContext, useRef, useReducer, useMemo } from 'react'
 import CodeContext from './main';
 
 
@@ -28,6 +28,31 @@ function App() {
   // (state, action) => newState という型のリデューサ (reducer) を受け取り、現在の state を dispatch メソッドとペアにして返します
   // https://beta.reactjs.org/reference/react/useReducer#usage
   const [state, dispatch] = useReducer(reducer, 0);
+
+  // メモ化された値を返します。
+  // “作成用” 関数とそれが依存する値の配列を渡してください。useMemo は依存配列の要素のいずれかが変化した場合にのみメモ化された値を再計算し
+  // 最適化によりレンダー毎に高価な計算が実行されるのを避けることができます。
+  const [count01, setcount01] = useState(0);
+  const [count02, setcount02] = useState(0); 
+
+
+  // const square = () => {
+  //   let i = 0;
+  //   while(i < 20000000000000000000) {
+  //     i++;
+  //   }
+  //   return count02 + count02;
+  // };
+
+  // count02が更新された時のみメモ化された値を再計算します。
+  // count02が更新されていない場合はメモに保存させれいるのもをreturnする。（高速化のため）
+  const square = useMemo(() => {
+    // let i = 0;
+    // while(i < 2) {
+    //   i++;
+    // }
+    return count02 + count02;
+  }, [count02]);
   const increase = () => {
     if(count == 10) return;
     setCounter(count + 1);
@@ -67,6 +92,15 @@ function App() {
       <p>Count : {state}</p>
       <button onClick={() => { dispatch({ type: 'increment' })}}> + </button>
       <button onClick={() => { dispatch({ type: 'decrement' })}}> - </button>
+
+      <hr />
+      <h1>useMemo</h1>
+      <div>count 1 = {count01}</div>
+      <div>count 2 = {count02}</div>
+      <div>result = {square}</div>
+      {/* <div>result = {square()}</div> */}
+      <button onClick={() => setcount01(count01 + 1)}> + </button>
+      <button onClick={() => setcount02(count02 + 1)}> + </button>
     </div>
   )
 }
